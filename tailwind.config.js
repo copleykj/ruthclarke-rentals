@@ -1,9 +1,21 @@
 module.exports = {
   mode: 'jit',
-  purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
+  purge: {
+    content: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
+    options: {
+      safelist: [
+        /data-theme$/,
+      ],
+    },
+  },
   darkMode: false, // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        roboto: ['Roboto', 'sans-serif'],
+        allison: ['Allison', 'cursive'],
+      },
+    },
   },
   variants: {
     extend: {},
@@ -11,4 +23,4 @@ module.exports = {
   plugins: [
     require('daisyui'),
   ],
-}
+};
