@@ -1,0 +1,103 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator nexusPrisma {
+  provider = "nexus-prisma"
+}
+
+// Top level model
+model User {
+  id            String     @id @default(uuid())
+  email         String?    @unique
+  emailVerified DateTime?
+  phone         String?
+  firstName     String?
+  lastName      String?
+  roles         UserRole[]
+  sessions      Session[]
+  createdAt     DateTime?  @default(now())
+  updatedAt     DateTime?  @updatedAt
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  id         String   @id @default(uuid())
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([identifier, token])
+}
+
+model Photo {
+  id         String    @id @default(uuid())
+  public_id  String    @unique
+  createdAt  DateTime? @default(now())
+  property   Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  propertyId String
+}
+
+model Property {
+  id            String        @id @default(uuid())
+  streetAddress String
+  city          String
+  type          PropertyType?
+  longitude     Float         @default(0)
+  latitude      Float         @default(0)
+  numUnits      Int           @default(0)
+  createdAt     DateTime      @default(now())
+  units         Unit[]
+  photos        Photo[]
+}
+
+model Unit {
+  id           String      @id @default(uuid())
+  unitName     String?     @default("")
+  numBedrooms  Int?        @default(1)
+  numBathrooms Float?      @default(1)
+  laundry      LaundryType @default(NONE)
+  utilities    Utility[]
+  description  String?
+  available    DateTime    @default(now())
+  createdAt    DateTime    @default(now())
+  property     Property    @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  propertyId   String
+}
+
+enum Utility {
+  ELECTRIC
+  NATURAL_GAS
+  SEWER_WATER
+}
+
+enum LaundryType {
+  NONE
+  HOOKUP
+  WASHER_DRYER
+}
+
+enum PropertyType {
+  HOUSE
+  APARTMENTS
+}
+
+enum UserRole {
+  ADMIN
+  MANAGER
+  USER
+}

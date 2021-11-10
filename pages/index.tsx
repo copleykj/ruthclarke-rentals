@@ -1,4 +1,5 @@
 import Head from 'next/head';
+
 import Header from '../components/Header';
 import Page from '../components/Page';
 import RentalCard from '../components/RentalCard';
@@ -37,6 +38,6 @@ export default function Home () {
           <RentalCard />
         </section>
       </main>
-    </Page>
+    </Page >
   );
 }

@@ -1,3 +1,4 @@
+import { SessionProvider } from 'next-auth/react';
 import 'tailwindcss/tailwind.css';
 
 interface MyAppProps {
@@ -5,8 +6,8 @@ interface MyAppProps {
   pageProps: any
 
 }
-function MyApp ({ Component, pageProps }: MyAppProps) {
-  return <Component {...pageProps} />;
+function MyApp ({ Component, pageProps: { session, ...pageProps } }: MyAppProps) {
+  return (<SessionProvider><Component {...pageProps} /></SessionProvider>);
 }
 
 export default MyApp;
