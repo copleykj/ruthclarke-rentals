@@ -7,6 +7,12 @@ export * from './generic/pageInfo';
 // export * from './location';
 export * from './user';
 export * from './session';
+export * from './photo';
+export * from './property';
+export * from './unit';
 
 // Enums
 export * from './userRole';
+export * from './propertyType';
+export * from './laundryType';
+export * from './utility';

@@ -48,19 +48,21 @@ model Photo {
   id         String    @id @default(uuid())
   public_id  String    @unique
   createdAt  DateTime? @default(now())
-  property   Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-  propertyId String
+  property   Property? @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  propertyId String?
+  unit       Unit?     @relation(fields: [unitId], references: [id], onDelete: Cascade)
+  unitId     String?
 }
 
 model Property {
-  id            String        @id @default(uuid())
+  id            String       @id @default(uuid())
   streetAddress String
   city          String
-  type          PropertyType?
-  longitude     Float         @default(0)
-  latitude      Float         @default(0)
-  numUnits      Int           @default(0)
-  createdAt     DateTime      @default(now())
+  type          PropertyType
+  longitude     Float        @default(0)
+  latitude      Float        @default(0)
+  numUnits      Int          @default(0)
+  createdAt     DateTime     @default(now())
   units         Unit[]
   photos        Photo[]
 }
@@ -77,6 +79,7 @@ model Unit {
   createdAt    DateTime    @default(now())
   property     Property    @relation(fields: [propertyId], references: [id], onDelete: Cascade)
   propertyId   String
+  Photo        Photo[]
 }
 
 enum Utility {

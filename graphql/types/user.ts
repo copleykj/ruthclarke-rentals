@@ -16,7 +16,7 @@ export const UsersSelectorInput = inputObjectType({
     t.string('firstName');
     t.string('lastName');
     t.string('phone');
-    t.field('roles', { type: 'UserRole' });
+    t.list.field('roles', { type: 'UserRole' });
   },
 });
 
