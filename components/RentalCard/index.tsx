@@ -1,11 +1,10 @@
 import React from 'react';
+import ComingSoon from '../ComingSoon';
 
 const RentalCard = () => {
   return (
     <div className="card shadow-xl rounded-md bg-white">
-      <figure>
-        <img src="https://picsum.photos/400/350" className="w-full" width="400" height="350" />
-      </figure>
+      <ComingSoon />
       <div className="card-body">
         <h2 className="card-title">shadow, center, padding</h2>
         <p>Sit sit necessitatibus veritatis sed molestiae voluptates incidunt iure sapiente.</p>
