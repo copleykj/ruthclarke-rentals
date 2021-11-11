@@ -56,7 +56,7 @@ model Photo {
 
 model Property {
   id            String       @id @default(uuid())
-  streetAddress String
+  streetAddress String       @unique
   city          String
   type          PropertyType @default(APARTMENTS)
   longitude     Float        @default(0)
