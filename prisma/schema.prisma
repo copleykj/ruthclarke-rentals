@@ -47,7 +47,7 @@ model VerificationToken {
 model Photo {
   id         String    @id @default(uuid())
   public_id  String    @unique
-  createdAt  DateTime? @default(now())
+  createdAt  DateTime  @default(now())
   property   Property? @relation(fields: [propertyId], references: [id], onDelete: Cascade)
   propertyId String?
   unit       Unit?     @relation(fields: [unitId], references: [id], onDelete: Cascade)
@@ -58,28 +58,32 @@ model Property {
   id            String       @id @default(uuid())
   streetAddress String
   city          String
-  type          PropertyType
+  type          PropertyType @default(APARTMENTS)
   longitude     Float        @default(0)
   latitude      Float        @default(0)
   numUnits      Int          @default(0)
   createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
   units         Unit[]
   photos        Photo[]
 }
 
 model Unit {
-  id           String      @id @default(uuid())
-  unitName     String?     @default("")
-  numBedrooms  Int?        @default(1)
-  numBathrooms Float?      @default(1)
-  laundry      LaundryType @default(NONE)
-  utilities    Utility[]
-  description  String?
-  available    DateTime    @default(now())
-  createdAt    DateTime    @default(now())
-  property     Property    @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-  propertyId   String
-  Photo        Photo[]
+  id               String      @id @default(uuid())
+  unitName         String
+  numBedrooms      Int         @default(1)
+  numFullBathrooms Int         @default(1)
+  numHalfBathrooms Int         @default(0)
+  laundry          LaundryType @default(NONE)
+  utilities        Utility[]
+  description      String      @default("")
+  available        Boolean     @default(true)
+  availableDate    DateTime    @default(now())
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+  property         Property    @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  propertyId       String
+  photos           Photo[]
 }
 
 enum Utility {

@@ -9,8 +9,8 @@ export const PropertyType = makeObjectType<'User'>({ model: Property });
 export const PropertySelectorInput = inputObjectType({
   name: 'PropertySelectorInput',
   definition (t) {
-    t.string('streetAddress');
-    t.string('city');
+    t.nonNull.string('streetAddress');
+    t.nonNull.string('city');
     t.field('type', { type: 'PropertyType' });
     t.float('longitude');
     t.float('latitude');
@@ -21,10 +21,10 @@ export const PropertySelectorInput = inputObjectType({
 const PropertyDataValidation = ({ object, string, number }: typeof Yup) => (object({
   streetAddress: string().required(),
   city: string().required(),
-  type: string().oneOf(PropertyEnum.members).required(),
-  latitude: number().min(-180).max(180).required(),
-  longitude: number().min(-180).max(180).required(),
-  numUnits: number().integer().min(0).required(),
+  type: string().oneOf(PropertyEnum.members),
+  latitude: number().min(-180).max(180),
+  longitude: number().min(-180).max(180),
+  numUnits: number().integer().min(0),
 }));
 
 export const PropertyCrud = makeCrud({
