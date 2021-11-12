@@ -1,14 +1,27 @@
 import React from 'react';
 import { signIn, signOut, useSession } from 'next-auth/react';
-import { LoginIcon, LogoutIcon } from '@heroicons/react/outline';
+import { ChevronDownIcon } from '@heroicons/react/solid';
 const AuthButton = () => {
-  const { status } = useSession({ required: false });
-  console.log(status);
+  const { data: session, status } = useSession({ required: false });
+  const isAdmin = session?.user?.roles.includes('ADMIN');
   switch (status) {
     case 'unauthenticated':
-      return <button onClick={() => signIn()} className="btn btn-link btn-secondary tooltip" data-tip="Log In"><LoginIcon className="h-8 w-8" /></button>;
+      return <button onClick={() => signIn()} className="btn btn-link btn-secondary tooltip" data-tip="Log In">Login</button>;
     case 'authenticated':
-      return <button onClick={() => signOut()} className="btn btn-link btn-accent tooltip" data-tip="Log Out"><LogoutIcon className="h-8 w-8" /></button>;
+      return (
+        <div className="dropdown dropdown-end dropdown-hover">
+          <button className="btn btn-link btn-primary capitalize">Account <ChevronDownIcon className="h-5 w-5" /></button>
+          <ul className="shadow py-3 menu dropdown-content bg-base-200 rounded-box w-52">
+            {isAdmin
+              ? <li><a href="/admin">Admin</a></li>
+              : <li><a href="/account">Manage Account</a></li>
+            }
+            <li>
+              <a onClick={() => signOut()}>Logout</a>
+            </li>
+          </ul>
+        </div>
+      );
     default:
       return null;
   };
