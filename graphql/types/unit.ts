@@ -9,30 +9,32 @@ export const UnitType = makeObjectType<'User'>({ model: Unit });
 export const UnitSelectorInput = inputObjectType({
   name: 'UnitSelectorInput',
   definition (t) {
-    t.nonNull.string('unitName');
-    t.int('numBedrooms');
-    t.int('numFullBathrooms');
-    t.int('numHalfBathrooms');
+    t.nonNull.string('address');
+    t.nonNull.string('city');
+    t.string('name');
+    t.int('bedrooms');
+    t.int('fullBaths');
+    t.int('halfBaths');
     t.field('laundry', { type: 'LaundryType', default: 'NONE' });
     t.list.field('utilities', { type: 'Utility' });
     t.string('description');
-    t.boolean('available');
+    t.boolean('visible');
     t.dateTime('availableDate');
-    t.nonNull.id('propertyId');
   },
 });
 
 const UnitDataValidation = ({ object, date, string, number, array, boolean }: typeof Yup) => (object({
-  unitName: string().required(),
-  numBedrooms: number().integer().min(1),
-  numFullBathrooms: number().integer().min(1),
-  numHalfBathrooms: number().integer().min(0),
+  address: string(),
+  city: string(),
+  name: string(),
+  bedrooms: number().integer().min(1),
+  fullBaths: number().integer().min(1),
+  halfBaths: number().integer().min(0),
   laundry: string().oneOf(LaundryType.members),
   utilities: array().of(string().oneOf(Utility.members)),
   description: string(),
-  available: boolean(),
+  visible: boolean(),
   availableDate: date(),
-  propertyId: string().required(),
 }));
 
 export const UnitCrud = makeCrud({

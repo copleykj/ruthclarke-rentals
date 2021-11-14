@@ -45,45 +45,31 @@ model VerificationToken {
 }
 
 model Photo {
-  id         String    @id @default(uuid())
-  public_id  String    @unique
-  createdAt  DateTime  @default(now())
-  property   Property? @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-  propertyId String?
-  unit       Unit?     @relation(fields: [unitId], references: [id], onDelete: Cascade)
-  unitId     String?
-}
-
-model Property {
-  id            String       @id @default(uuid())
-  streetAddress String       @unique
-  city          String
-  type          PropertyType @default(APARTMENTS)
-  longitude     Float        @default(0)
-  latitude      Float        @default(0)
-  numUnits      Int          @default(0)
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
-  units         Unit[]
-  photos        Photo[]
+  id        String   @id @default(uuid())
+  public_id String   @unique
+  createdAt DateTime @default(now())
+  unit      Unit?    @relation(fields: [unitId], references: [id], onDelete: Cascade)
+  unitId    String?
 }
 
 model Unit {
-  id               String      @id @default(uuid())
-  unitName         String
-  numBedrooms      Int         @default(1)
-  numFullBathrooms Int         @default(1)
-  numHalfBathrooms Int         @default(0)
-  laundry          LaundryType @default(NONE)
-  utilities        Utility[]
-  description      String      @default("")
-  available        Boolean     @default(true)
-  availableDate    DateTime    @default(now())
-  createdAt        DateTime    @default(now())
-  updatedAt        DateTime    @updatedAt
-  property         Property    @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-  propertyId       String
-  photos           Photo[]
+  id            String      @id @default(uuid())
+  address       String
+  city          String
+  name          String?
+  bedrooms      Int         @default(1)
+  fullBaths     Int         @default(1)
+  halfBaths     Int         @default(0)
+  laundry       LaundryType @default(NONE)
+  utilities     Utility[]
+  description   String      @default("")
+  visible       Boolean     @default(true)
+  availableDate DateTime    @default(now())
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  longitude     Float       @default(0)
+  latitude      Float       @default(0)
+  photos        Photo[]
 }
 
 enum Utility {
@@ -96,11 +82,6 @@ enum LaundryType {
   NONE
   HOOKUP
   WASHER_DRYER
-}
-
-enum PropertyType {
-  HOUSE
-  APARTMENTS
 }
 
 enum UserRole {
